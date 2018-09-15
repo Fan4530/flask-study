@@ -10,7 +10,7 @@ Clone the repository
 git clone https://github.com/russomp/t3-discovery-tool.git
 ```
 
-And your ready to start coding :metal:
+And you're ready to start coding :metal:
 
 ## Contributing
 
