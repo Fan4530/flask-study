@@ -5,6 +5,14 @@ name = "pypi"
 
 [packages]
 flask = "*"
+flask-restplus = "*"
+flask-script = "*"
+python-dotenv = "*"
+flask-marshmallow = "*"
+flask-mongoengine = "*"
+flask-bcrypt = "*"
+flask-jwt-extended = "*"
+marshmallow-mongoengine = "*"
 
 [dev-packages]
 
