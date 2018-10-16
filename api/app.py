@@ -1,22 +1,18 @@
 from flask import Flask
-from flask_restplus import Api
-from flask_mongoengine import MongoEngine
-from flask_marshmallow import Marshmallow
-from flask_bcrypt import Bcrypt
 
+from .extensions import api, db, ma, bcrypt
 from .config import app_configs
 from .resources import Login, Logout, User, Users, Idea, Ideas, Ping
 
-api = Api()
-db = MongoEngine()
-ma = Marshmallow()
-bcrypt = Bcrypt()
+
 
 def create_app(config_name):
   app = Flask(__name__)
   app.config.from_object(app_configs[config_name])
   
-  api = Api(app, title='Ideas API', prefix="/api")
+  api.app = app
+  api.title = 'Ideas API'
+  api.prefix = "/api"
   api.add_resource(Ping, '/ping', endpoint='ping')
   api.add_resource(Login, '/auth/login', endpoint='login')
   api.add_resource(Logout, '/auth/logout', endpoint='logout')

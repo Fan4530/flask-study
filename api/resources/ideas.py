@@ -1,5 +1,7 @@
 from flask_restplus import Resource
 
+from ..models import Idea, idea_schema, ideas_schema
+
 
 class Ideas(Resource):
   def get(self):

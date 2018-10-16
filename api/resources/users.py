@@ -1,5 +1,7 @@
 from flask_restplus import Resource
 
+from ..models import User
+
 
 class Users(Resource):
   def get(self):
