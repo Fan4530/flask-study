@@ -13,18 +13,8 @@ class BaseConfig(object):
 
   CSRF_ENABLED = True
   DEBUG = False
+  JWT_SECRET_KEY = os.getenv('JWT_SECRET')
   MONGODB_HOST = os.getenv('DATABASE_URL')
-  SECRET = os.getenv('SECRET')
-
-
-class DefaultConfig(BaseConfig):
-  """Parent configuration class."""
-
-  CSRF_ENABLED = True
-  DEBUG = False
-  MONGODB_SETTINGS = {
-    'host': os.getenv('DATABASE_URL')
-  }
   SECRET = os.getenv('SECRET')
 
 
@@ -38,7 +28,7 @@ class TestingConfig(BaseConfig):
   """Configurations for Testing, with a separate test database."""
 
   DEBUG = True
-  MONGOENGINE_DATABASE_URI = 'postgresql://localhost/test_db'
+  MONGOENGINE_DATABASE_URI = 'mongodb://localhost/t3-test-db'
   TESTING = True
 
 
