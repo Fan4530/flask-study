@@ -1,5 +1,6 @@
 from flask_restplus import Resource
 
+from ..extensions import jwt
 from ..models import User, user_schema, users_schema
 
 

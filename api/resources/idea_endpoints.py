@@ -1,9 +1,9 @@
 from flask_restplus import Resource
 
-from ..models import User
+from ..models import Idea, idea_schema, ideas_schema
 
 
-class Users(Resource):
+class IdeasEndpoint(Resource):
   def get(self):
     pass
 
@@ -11,7 +11,7 @@ class Users(Resource):
     pass
 
 
-class User(Resource):
+class IdeaEndpoint(Resource):
   def get(self, id):
     pass
 
