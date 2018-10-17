@@ -1,4 +1,4 @@
-from .ping import Ping
-from .auth import Login, Logout
-from .ideas import Idea, Ideas
-from .users import User, Users
+from .test_endpoints import Ping
+from .auth_endpoints import Login, Logout
+from .user_endpoints import UsersEndpoint, UserEndpoint
+from .idea_endpoints import IdeasEndpoint, IdeaEndpoint
