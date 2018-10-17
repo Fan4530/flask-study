@@ -13,6 +13,7 @@ class User(db.Document):
   last_name = db.StringField(max_length=50)
   role = db.StringField(default="writer", validation=lambda role: role in ["writer", "admin"])
   created_at = db.DateTimeField(default=datetime.utcnow)
+  updated_at = db.DateTimeField(default=datetime.utcnow)
 
   meta = {'collection': 'users'}
 
@@ -22,5 +23,6 @@ class UserSchema(ModelSchema):
         model = User
 
 
-user_schema = UserSchema(load_only=("id", "password", "created_at"))
-users_schema = UserSchema(many=True)
+hidden_fields = ("id", "password")
+user_schema = UserSchema(load_only=hidden_fields)
+users_schema = UserSchema(load_only=hidden_fields, many=True)
