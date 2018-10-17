@@ -13,6 +13,7 @@ flask-mongoengine = "*"
 flask-bcrypt = "*"
 flask-jwt-extended = "*"
 marshmallow-mongoengine = "*"
+gunicorn = "*"
 
 [dev-packages]
 
