@@ -16,13 +16,20 @@ def create_app(config_name):
 
   api.init_app(app)
   api.title = 'Ideas API'
+  api.authorizations = {
+    'apikey': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'Authorization'
+    }
+  }
 
   api.add_resource(Ping, '/ping', endpoint='ping')
   api.add_resource(Login, '/auth/login', endpoint='login')
   api.add_resource(Logout, '/auth/logout', endpoint='logout')
-  api.add_resource(UsersEndpoint, '/users', endpoint='users-ep')
-  api.add_resource(UserEndpoint, '/users/<string:user_id>', endpoint='user-ep')
+  api.add_resource(UsersEndpoint, '/users', endpoint='users')
+  api.add_resource(UserEndpoint, '/users/<string:user_id>', endpoint='user')
   api.add_resource(IdeasEndpoint, '/ideas/', endpoint='ideas-ep')
-  api.add_resource(IdeaEndpoint, '/ideas/<string:idea_id>', endpoint='idea-ep')
+  api.add_resource(IdeaEndpoint, '/ideas/<string:idea_id>', endpoint='idea')
 
   return app
