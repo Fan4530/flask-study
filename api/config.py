@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 
@@ -14,7 +15,15 @@ class BaseConfig(object):
   CSRF_ENABLED = True
   DEBUG = False
   JWT_SECRET_KEY = os.getenv('JWT_SECRET')
+
   MONGODB_HOST = os.getenv('DATABASE_URL')
+  
+  parsed_host = urlparse(MONGODB_HOST)
+  MONGODB_DB = parsed_host.path.strip("/")
+  MONGODB_PORT = parsed_host.port
+  MONGODB_USERNAME = parsed_host.username
+  MONGODB_PASSWORD = parsed_host.password
+
   SECRET = os.getenv('SECRET')
 
 
