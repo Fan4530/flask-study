@@ -29,7 +29,7 @@ def create_app(config_name):
   api.add_resource(Logout, '/auth/logout', endpoint='logout')
   api.add_resource(UsersEndpoint, '/users', endpoint='users')
   api.add_resource(UserEndpoint, '/users/<string:user_id>', endpoint='user')
-  api.add_resource(IdeasEndpoint, '/ideas/', endpoint='ideas-ep')
+  api.add_resource(IdeasEndpoint, '/ideas/', endpoint='ideas')
   api.add_resource(IdeaEndpoint, '/ideas/<string:idea_id>', endpoint='idea')
 
   return app

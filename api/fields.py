@@ -20,3 +20,21 @@ update_user_fields = api.model('Upate user fields', {
     'action': fields.String,
     'data': fields.Nested(user_fields)
 })
+
+idea_fields = api.model('Idea fields', {
+    'title': fields.String,
+    'details': fields.String,
+})
+
+updateable_idea_fields = api.model('Udateable idea fields', {
+    'assignee': fields.String,
+    'title': fields.String,
+    'details': fields.String,
+    'pitch_approvals': fields.String,
+    'title_approvals': fields.String
+})
+
+update_idea_fields = api.model('Update idea fields', {
+    'action': fields.String,
+    'data': fields.Nested(updateable_idea_fields)
+})
