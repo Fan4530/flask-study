@@ -38,3 +38,11 @@ update_idea_fields = api.model('Update idea fields', {
     'action': fields.String,
     'data': fields.Nested(updateable_idea_fields)
 })
+
+goal_fields = api.model('create a new goal field', {
+    'verticals': fields.String,
+    'assignee': fields.String,
+    'deadline': fields.String,
+    'total_number': fields.Integer,
+    'completed_number': fields.Integer
+})
