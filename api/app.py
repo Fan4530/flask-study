@@ -1,6 +1,6 @@
 from flask import Flask
 
-from api.resources.goal_endpoints import GoalEndPoint, GoalsEndPoint, GoalsFilterEndPoint
+from api.resources.goal_endpoints import GoalEndPoint, GoalsEndPoint
 from .extensions import api, db, ma, bcrypt, jwt
 from .config import app_configs
 from .resources import Ping, Login, Logout, UsersEndpoint, UserEndpoint, IdeasEndpoint, IdeaEndpoint

@@ -12,7 +12,7 @@ class Goal(db.Document):
     deadline = db.StringField(default=None)
     total_number = db.IntField(default=0)
     completed_number = db.IntField(default=0)
-
+    personal_goals = db.ListField(db.StringField(max_length=300), default=[])
     created_at = db.DateTimeField(default=datetime.utcnow)
     updated_at = db.DateTimeField(default=datetime.utcnow)
 

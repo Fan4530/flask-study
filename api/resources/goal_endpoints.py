@@ -1,6 +1,4 @@
-import json
 import sys
-
 from flask import request
 from flask_restplus import Resource
 
@@ -43,17 +41,22 @@ class GoalsEndPoint(Resource):
         print(personal_total_goals)
 
         for i in range(len_contributors):
-            print(contributors[i].id, file = sys.stderr)
-            personal_goal = Goal(verticals = json_body["verticals"],
-                                 assignee = str(contributors[i].id),
-                                 deadline = json_body["deadline"],
-                                 total_number = personal_total_goals + 1
+            assignee_id = str(contributors[i].id)
+
+            print(assignee_id, file=sys.stderr)
+
+            personal_goal = Goal(verticals=json_body["verticals"],
+                                 assignee=assignee_id,
+                                 deadline=json_body["deadline"],
+                                 total_number=personal_total_goals + 1
                                  )
             if i < mark_idx:
                 personal_goal.total_number = personal_total_goals
-            personal_goal.save()
+            personal_goal = personal_goal.save()
+            goal.personal_goals.append(str(personal_goal.id))
 
         try:
+            print(goal.personal_goals)
             new_goal = goal.save()
             print('The new goal has been saved!', file=sys.stderr)
         except Exception as e:
@@ -78,8 +81,46 @@ class GoalEndPoint(Resource):
         """Update a goal"""
         print("Start to update a new goal ", file=sys.stderr)
         goal = Goal.objects.get_or_404(id=goal_id)
+
+        goal_patch = request.get_json(force=True)
         try:
-            goal.update(**request.get_json(force=True))
-            return 'The goal has been changed!', 200
+            goal.update(**goal_patch)
+            print('The goal has been changed!', file=sys.stderr)
         except Exception as e:
             return str(e), 400
+
+        try:
+            new_total_number = goal_patch["total_number"]
+        except Exception as e:
+            new_total_number = None
+
+        # start to update personal goals
+        if goal.personal_goals and new_total_number is not None:
+
+            len_contributors = len(goal.personal_goals)
+
+            print("show change content json", file=sys.stderr)
+            print(goal_patch, file=sys.stderr)
+
+            personal_total_goals = int(new_total_number / len_contributors)
+            mark_idx = new_total_number % len_contributors
+            for c, assignee in enumerate(goal.personal_goals):
+                print(c, file=sys.stderr)
+                print(assignee, file=sys.stderr)
+
+                personal_goal = Goal.objects(id=str(assignee))
+
+                print("personal goal has been fetched: ", file=sys.stderr)
+                print(personal_goal, file=sys.stderr)
+
+                if c < mark_idx:
+                    goal_patch["total_number"] = personal_total_goals
+                else:
+                    goal_patch["total_number"] = personal_total_goals + 1
+
+                print("The new goal patch is :", file=sys.stderr)
+                print(goal_patch, file=sys.stderr)
+
+                personal_goal.update(**goal_patch)
+
+        return "Global and personal goals have been changed"
