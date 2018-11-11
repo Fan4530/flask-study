@@ -1,3 +1,4 @@
+import json
 import sys
 
 from flask import request
@@ -6,11 +7,10 @@ from flask_restplus import Resource
 from api.fields import goal_fields
 from ..extensions import api
 
-from api.models import goals_schema, Goal, goal_schema
+from api.models import goals_schema, Goal, goal_schema, User
 
 
 class GoalsEndPoint(Resource):
-
 
     def get(self):
         """Return a list of goals with filters"""
@@ -20,20 +20,38 @@ class GoalsEndPoint(Resource):
         goals = Goal.objects(__raw__=filters)
         return goals_schema.dump(goals)
 
-
     @api.expect(goal_fields)
     def post(self):
         """Create a new goal"""
         print('Start to create a new goal!', file=sys.stderr)
 
-        print(request.get_json(force=True), file=sys.stderr)
+        json_body = request.get_json(force=True)
+        print(json_body, file=sys.stderr)
 
-        goal, error = goal_schema.load(request.get_json(force=True))
+        goal, error = goal_schema.load(json_body)
         if error:
             return "Schema load error, check your request body!", 500
 
         # print("The goal body is : ", file=sys.stderr)
         # print(goal_schema.dump(goal), file=sys.stderr)
+
+        contributors = User.objects(role="contributor")
+        len_contributors = len(contributors)
+        total_goals = json_body["total_number"]
+        personal_total_goals = int(total_goals / len_contributors)
+        mark_idx = total_goals % len_contributors
+        print(personal_total_goals)
+
+        for i in range(len_contributors):
+            print(contributors[i].id, file = sys.stderr)
+            personal_goal = Goal(verticals = json_body["verticals"],
+                                 assignee = str(contributors[i].id),
+                                 deadline = json_body["deadline"],
+                                 total_number = personal_total_goals + 1
+                                 )
+            if i < mark_idx:
+                personal_goal.total_number = personal_total_goals
+            personal_goal.save()
 
         try:
             new_goal = goal.save()
@@ -65,5 +83,3 @@ class GoalEndPoint(Resource):
             return 'The goal has been changed!', 200
         except Exception as e:
             return str(e), 400
-        # TODO: the gaol that is return is not updated
-        # return goal_schema.dump(goal)
